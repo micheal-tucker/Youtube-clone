@@ -1,25 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import HomePage from "./pages/HomePage";
+import VideoPage from "./pages/VideoPage";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css"
 
 function App() {
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+
+  const toggleSidebar = () => {
+    setSidebarExpanded(!sidebarExpanded);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="d-flex flex-column vh-100">
+        <Header toggleSidebar={toggleSidebar} darkMode={false} toggleDarkMode={function (): void {
+          throw new Error("Function not implemented.");
+        } } />
+        <div className="d-flex flex-grow-1 overflow-hidden">
+          <Sidebar expanded={sidebarExpanded} />
+          <main className="flex-grow-1 overflow-auto bg-light">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/video/:videoId" element={<VideoPage />} />
+            </Routes>
+          </main>
+        </div>
+      </div>
+    </Router>
   );
 }
 
